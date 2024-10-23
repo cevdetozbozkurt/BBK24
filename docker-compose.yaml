@@ -25,7 +25,6 @@ services:
     networks:
       - bbnetwork
     restart: always
-    # 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
 
   # Library veritabanı
   postgres-library:
