@@ -1,0 +1,57 @@
+version: '3'
+
+services:
+  # pgadmin
+  pgadminapp:
+    image: dpage/pgadmin4:latest
+    ports:
+      - "8080:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=user@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    restart: always
+    networks:
+      - bbnetwork
+
+  # User veritabanı
+  postgres-user:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: user_db  # Veritabanı adını burada ayarlayabilirsiniz
+      POSTGRES_USER: admin     # Kullanıcı adını burada ayarlayabilirsiniz
+      POSTGRES_PASSWORD: admin  # Parolayı burada ayarlayabilirsiniz
+    volumes:
+      - /root/workspace/BBK-24/db/user/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - bbnetwork
+    restart: always
+    # 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
+
+  # Library veritabanı
+  postgres-library:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: library_db  # Veritabanı adını burada ayarlayabilirsiniz
+      POSTGRES_USER: admin     # Kullanıcı adını burada ayarlayabilirsiniz
+      POSTGRES_PASSWORD: admin  # Parolayı burada ayarlayabilirsiniz
+    volumes:
+      - /root/workspace/BBK-24/db/library/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - bbnetwork
+    restart: always
+  
+  # Payment veritabanı
+  postgres-payment:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: payment_db  # Veritabanı adını burada ayarlayabilirsiniz
+      POSTGRES_USER: admin     # Kullanıcı adını burada ayarlayabilirsiniz
+      POSTGRES_PASSWORD: admin  # Parolayı burada ayarlayabilirsiniz
+    volumes:
+      - /root/workspace/BBK-24/db/payment/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - bbnetwork
+    restart: always
+
+networks:
+  bbnetwork:
